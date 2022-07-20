@@ -41,12 +41,42 @@ function loadDocument(){
     let ajax = new XMLHttpRequest(); //Async javascript and XML
     ajax.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-            document.querySelector('#data').innerHTML = this.responseText;
+            fromJsonToTable(this.responseText);
+            // document.querySelector('#data').innerHTML = this.responseText;
         }
     };
     ajax.open("GET", "data.json");
     ajax.send();
 }
-loadDocument();
+
+function fromJsonToTable(data){
+    data = JSON.parse(data);
+    var table = document.createElement("table"), row;
+    table.setAttribute("id", "mytable");
+    var tableHeader = document.createElement("thead");
+    var orderArrayHeader = ["Name", "Lastname", "Sex", "Role", "Senior Position", "Age"];
+    table.appendChild(tableHeader);
+    for(var i=0; i<orderArrayHeader.length; i++){
+        tableHeader.appendChild(document.createElement("th"))
+        .appendChild(document.createTextNode(orderArrayHeader[i]));
+    }
+
+    document.getElementById("myDiv").appendChild(table);
+    for (let key in data) {
+        val = Object.values(data[key]);
+        row = table.insertRow();
+        for (k in val){
+            cell = row.insertCell();
+            cell.innerHTML = val[k];
+        }
+    }
+    var divContainer = document.getElementById("data");
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+
+}
+
+
+// loadDocument();
 
 
