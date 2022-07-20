@@ -41,7 +41,7 @@ function loadDocument(){
     let ajax = new XMLHttpRequest(); //Async javascript and XML
     ajax.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-            fromJsonToTable(this.responseText);
+            fromJsonToTable(JSON.parse(this.responseText));
             // document.querySelector('#data').innerHTML = this.responseText;
         }
     };
@@ -49,8 +49,13 @@ function loadDocument(){
     ajax.send();
 }
 
+function loadDocumentFetchAPI(){
+    fetch('data.json')
+    .then(response => response.json())
+    .then(data => fromJsonToTable(data));
+}
+
 function fromJsonToTable(data){
-    data = JSON.parse(data);
     var table = document.createElement("table"), row;
     table.setAttribute("id", "mytable");
     var tableHeader = document.createElement("thead");
@@ -76,7 +81,5 @@ function fromJsonToTable(data){
 
 }
 
-
-// loadDocument();
 
 
